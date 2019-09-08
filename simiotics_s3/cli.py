@@ -78,7 +78,14 @@ def parse_data_register(args: argparse.Namespace) -> None:
         print('*** Sample {} ***'.format(i))
         print(response)
 
-if __name__ == '__main__':
+def generate_argument_parser() -> argparse.ArgumentParser:
+    """
+    Generates argument parser for the simiotics_s3 CLI
+
+    Args: None
+
+    Returns: argparse.ArgumentParser
+    """
     parser = argparse.ArgumentParser('Define and interact with Simiotics S3 data registries')
     subparsers = parser.add_subparsers(
         title='Actions',
@@ -202,5 +209,15 @@ if __name__ == '__main__':
     )
     data_register.set_defaults(func=parse_data_register)
 
+    return parser
+
+def main() -> None:
+    """
+    Runs the simiotics_s3 CLI
+    """
+    parser = generate_argument_parser()
     args = parser.parse_args()
     args.func(args)
+
+if __name__ == '__main__':
+    main()
