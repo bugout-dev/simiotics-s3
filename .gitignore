@@ -286,3 +286,4 @@ tags
 .vscode/
 .simiotics_s3/
 .mypy_cache
+.dev/
