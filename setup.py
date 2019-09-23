@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 
 setup(
     name='simiotics-s3',
@@ -21,7 +21,7 @@ setup(
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Version Control',
     ],
-    url='https://github.com/nkashy1/simiotics-s3',
+    url='https://github.com/simiotics/simiotics-s3',
     entry_points={
         'console_scripts': [
             'simiotics_s3 = simiotics_s3.cli:main'
