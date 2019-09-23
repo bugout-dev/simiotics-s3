@@ -72,7 +72,9 @@ def parse_data_register(args: argparse.Namespace) -> None:
     Handler for the "data register" command
     """
     simiotics_client = client_from_env()
-    responses = data.register_data(simiotics_client, args.source, args.files)
+    raw_tags = args.tags.split(',')
+    tags = dict([tuple(raw_tag.split('=')) for raw_tag in raw_tags])
+    responses = data.register_data(simiotics_client, args.source, args.files, tags)
     print('*** Data registration ***')
     for i, response in enumerate(responses):
         print('*** Sample {} ***'.format(i))
@@ -201,6 +203,17 @@ def generate_argument_parser() -> argparse.ArgumentParser:
         '--source',
         required=True,
         help='ID of the source',
+    )
+    data_register.add_argument(
+        '-t',
+        '--tags',
+        type=str,
+        required=False,
+        default='',
+        help=(
+            'Comma-separated list of <key>=<value> pairs specifying tags to be assocated to the '
+            'images being registered (e.g. format=jpg,class=human)'
+        )
     )
     data_register.add_argument(
         'files',

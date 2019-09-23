@@ -2,7 +2,7 @@
 Data-related functionality for simiotics_s3 tool
 """
 import os
-from typing import Iterator, List, Optional
+from typing import Iterator, List, Optional, Tuple
 import uuid
 
 import boto3
@@ -94,6 +94,7 @@ def register_data(
         simiotics_client: Simiotics,
         source_id: str,
         files: List[str],
+        tags: List[Tuple[str, str]]
     ) -> Iterator[data_pb2.RegisterDataResponse]:
     """
     Register files under a source in a Simiotics data registry
@@ -105,6 +106,9 @@ def register_data(
         String identifying the source under which the data is registered
     files
         Paths to files that should be registered
+    tags
+        List of key-value ordered pairs representing the tags that should be associated to each
+        of the files when registered against the data registry
 
     Returns: Iterator over the responses to the registration requests
     """
@@ -142,13 +146,12 @@ def register_data(
                 print(str(err))
 
             if successful:
+                tags['filename'] = data_file
                 datum = data_pb2.Datum(
                     id=datum_id,
                     source=source,
                     content='s3://{}/{}'.format(bucket, key),
-                    tags={
-                        'filename': data_file,
-                    },
+                    tags=tags,
                 )
                 request = data_pb2.RegisterDataRequest(
                     version=simiotics_client.client_version,
